@@ -3,7 +3,7 @@
 
 use core::panic::PanicInfo;
 
-static HELLO: &[u8] = b"Hello World!";
+static HELLO: &[u8] = "Hello World!";
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
@@ -25,6 +25,8 @@ fn panic(_info: &PanicInfo) -> ! {
     loop {}
 }
 
+
+mod vga_buffer;
 
 
 
