@@ -95,6 +95,9 @@ impl Writer {
         }
     }
 
+
+}
+
     //test printing something
     pub fn print_something() {
         let mut writer = Writer {
@@ -107,4 +110,3 @@ impl Writer {
         writer.write_string("ello ");
         writer.write_string("Wörld!");
     }
-}
