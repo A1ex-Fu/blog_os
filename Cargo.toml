@@ -15,5 +15,5 @@ panic = "abort" # disable stack unwinding on panic
 
 [dependencies]
 bootloader = "0.9.10"
-
-
+#stops compiler from optimizing away writes since we never read
+volatile = "0.2.6"

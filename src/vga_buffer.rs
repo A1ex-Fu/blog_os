@@ -70,10 +70,15 @@ impl Writer {
                 let col = self.column_position;
 
                 let color_code = self.color_code;
-                self.buffer.chars[row][col] = ScreenChar {
+                
+                self.buffer.chars[row][col].write(ScreenChar{
                     ascii_character: byte,
                     color_code,
-                };
+                });
+                // self.buffer.chars[row][col] = ScreenChar {
+                //     ascii_character: byte,
+                //     color_code,
+                // };
                 self.column_position += 1;
             }
         }
@@ -96,7 +101,39 @@ impl Writer {
 }
 
 //test printing something
+// pub fn print_something() {
+//     let mut writer = Writer {
+//         column_position: 0,
+//         color_code: ColorCode::new(Color::Yellow, Color::Black),
+//         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
+//     };
+
+//     writer.write_byte(b'H');
+//     writer.write_string("ello ");
+//     writer.write_string("Wörld!");
+// }
+
+
+//write volatilely to make sure the writes are not optimized away
+use volatile:Volatile;
+
+struct Buffer{
+    chars:[[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_WIDTH],
+}
+
+
+use core::fmt;
+
+impl fmt::Write for Writer {
+    fn write_str(&mut self, s: &str) -> fmt::Result {
+        self.write_string(s);
+        Ok(())
+    }
+}
+
+
 pub fn print_something() {
+    use core::fmt::Write;
     let mut writer = Writer {
         column_position: 0,
         color_code: ColorCode::new(Color::Yellow, Color::Black),
@@ -104,6 +141,6 @@ pub fn print_something() {
     };
 
     writer.write_byte(b'H');
-    writer.write_string("ello ");
-    writer.write_string("Wörld!");
+    writer.write_string("ello! ");
+    write!(writer, "The numbers are {} and {}", 42, 1.0/3.0).unwrap();
 }
