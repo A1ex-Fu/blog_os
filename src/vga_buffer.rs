@@ -133,7 +133,7 @@ impl Writer {
 
 
 //write volatilely to make sure the writes are not optimized away
-use volatile:Volatile;
+use volatile::Volatile;
 
 struct Buffer{
     chars:[[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_WIDTH],
