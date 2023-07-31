@@ -3,14 +3,20 @@
 
 use core::panic::PanicInfo;
 
-
-
+// in src/main.rs
 #[no_mangle]
-pub extern "C" fn _start() -> ! {
-    vga_buffer::print_something();
+pub extern "C" fn _start() {
+    println!("Hello World{}", "!");
 
     loop {}
 }
+
+// #[no_mangle]
+// pub extern "C" fn _start() -> ! {
+//     vga_buffer::print_something();
+
+//     loop {}
+// }
 
 //static HELLO: &[u8] = "Hello World!";
 // #[no_mangle]
