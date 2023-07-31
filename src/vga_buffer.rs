@@ -43,10 +43,11 @@ struct ScreenChar {
 const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
 
-#[repr(transparent)]
-struct Buffer {
-    chars: [[ScreenChar; BUFFER_WIDTH]; BUFFER_HEIGHT],
-}
+//non-volatile ver
+// #[repr(transparent)]
+// struct Buffer {
+//     chars: [[ScreenChar; BUFFER_WIDTH]; BUFFER_HEIGHT],
+// }
 
 //writer type
 pub struct Writer {
