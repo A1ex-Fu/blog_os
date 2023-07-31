@@ -3,7 +3,7 @@
 
 use core::panic::PanicInfo;
 
-static HELLO: &[u8] = "Hello World!";
+
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
@@ -11,6 +11,8 @@ pub extern "C" fn _start() -> ! {
 
     loop {}
 }
+
+//static HELLO: &[u8] = "Hello World!";
 // #[no_mangle]
 // pub extern "C" fn _start() -> ! {
 //     let vga_buffer = 0xb8000 as *mut u8;
