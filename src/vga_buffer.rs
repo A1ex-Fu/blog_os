@@ -43,11 +43,6 @@ struct ScreenChar {
 const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
 
-//non-volatile ver
-// #[repr(transparent)]
-// struct Buffer {
-//     chars: [[ScreenChar; BUFFER_WIDTH]; BUFFER_HEIGHT],
-// }
 
 //writer type
 pub struct Writer {
@@ -119,18 +114,6 @@ impl Writer {
     }
 }
 
-//test printing something
-// pub fn print_something() {
-//     let mut writer = Writer {
-//         column_position: 0,
-//         color_code: ColorCode::new(Color::Yellow, Color::Black),
-//         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
-//     };
-
-//     writer.write_byte(b'H');
-//     writer.write_string("ello ");
-//     writer.write_string("Wörld!");
-// }
 
 
 //write volatilely to make sure the writes are not optimized away
@@ -165,22 +148,12 @@ pub fn print_something() {
 }
 
 
-//global writer (avoid passing an instance around)
-// pub static WRITER: Writer = Writer {
-//     column_position: 0,
-//     color_code: ColorCode::new(Color::Yellow, Color::Black),
-//     buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
-// };
 
 //lazy def to allow raw pointers
 use lazy_static::lazy_static;
 use spin::Mutex;
 lazy_static! {
-    // pub static ref WRITER: Writer = Writer {
-    //     column_position: 0,
-    //     color_code: ColorCode::new(Color::Yellow, Color::Black),
-    //     buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
-    // };
+
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         column_position: 0,
         color_code: ColorCode::new(Color::Yellow, Color::Black),
