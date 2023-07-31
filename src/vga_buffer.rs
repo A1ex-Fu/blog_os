@@ -81,8 +81,9 @@ impl Writer {
 
     //came like this not sure if i actually need it
     fn new_line(&mut self) {/* TODO */}
+}
 
-
+impl Writer {
     pub fn write_string(&mut self, s: &str) {
         for byte in s.bytes() {
             match byte {
@@ -94,19 +95,17 @@ impl Writer {
 
         }
     }
-
-
 }
 
-    //test printing something
-    pub fn print_something() {
-        let mut writer = Writer {
-            column_position: 0,
-            color_code: ColorCode::new(Color::Yellow, Color::Black),
-            buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
-        };
-    
-        writer.write_byte(b'H');
-        writer.write_string("ello ");
-        writer.write_string("Wörld!");
-    }
+//test printing something
+pub fn print_something() {
+    let mut writer = Writer {
+        column_position: 0,
+        color_code: ColorCode::new(Color::Yellow, Color::Black),
+        buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
+    };
+
+    writer.write_byte(b'H');
+    writer.write_string("ello ");
+    writer.write_string("Wörld!");
+}
