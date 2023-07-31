@@ -173,7 +173,7 @@ pub fn print_something() {
 
 //lazy def to allow raw pointers
 use lazy_static::lazy_static;
-use spin::Mutex
+use spin::Mutex;
 lazy_static! {
     // pub static ref WRITER: Writer = Writer {
     //     column_position: 0,
