@@ -7,12 +7,12 @@
 use core::panic::PanicInfo;
 
 // in src/main.rs
-#[no_mangle]
-pub extern "C" fn _start() {
-    println!("Hello World{}", "!");
-    //panic!("Some panic message");
-    loop {}
-}
+// #[no_mangle]
+// pub extern "C" fn _start() {
+//     println!("Hello World{}", "!");
+//     //panic!("Some panic message");
+//     loop {}
+// }
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
@@ -44,4 +44,13 @@ pub extern "C" fn _start() -> ! {
     test_main();
 
     loop {}
+}
+
+
+
+#[test_case]
+fn trivial_assertion() {
+    print!("trivial assertion... ");
+    assert_eq!(1, 1);
+    println!("[ok]");
 }
