@@ -20,8 +20,8 @@ fn panic(info: &PanicInfo) -> ! {
 
 mod vga_buffer;
 
-#[feature(custom_test_frameworks)]
-#[test_runner(crate::test_runner)]
+#![feature(custom_test_frameworks)]
+#![test_runner(crate::test_runner)]
 
 #[cfg(test)]
 fn test_runner(tests: &[&dyn Fn()]) {
