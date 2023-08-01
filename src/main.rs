@@ -1,5 +1,7 @@
 #![no_std] // don't link the Rust standard library
 #![no_main] // disable all Rust-level entry points
+#![feature(custom_test_frameworks)]
+#![test_runner(crate::test_runner)]
 
 use core::panic::PanicInfo;
 
@@ -20,8 +22,7 @@ fn panic(info: &PanicInfo) -> ! {
 
 mod vga_buffer;
 
-#![feature(custom_test_frameworks)]
-#![test_runner(crate::test_runner)]
+
 
 #[cfg(test)]
 fn test_runner(tests: &[&dyn Fn()]) {
