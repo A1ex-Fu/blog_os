@@ -1,14 +1,10 @@
-#[allow(dead_code)] //mute warnings about them not being used
-#[derive(Debug, Clone, Copy, PartialEq, Eq)] //enable copy semantics and make is printable and comparable
-#[repr(u8)] //store colors as u8
-
-
-
-
 const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
 
 // COLORS
+#[allow(dead_code)] //mute warnings about them not being used
+#[derive(Debug, Clone, Copy, PartialEq, Eq)] //enable copy semantics and make is printable and comparable
+#[repr(u8)] //store colors as u8
 pub enum Color {
     Black = 0,
     Blue = 1,
