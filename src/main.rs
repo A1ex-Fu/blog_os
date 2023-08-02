@@ -6,6 +6,10 @@
 
 use core::panic::PanicInfo;
 
+//additional imports
+use crate::vga_buffer::WRITER;
+
+
 mod serial;
 mod vga_buffer;
 
