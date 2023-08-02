@@ -41,42 +41,42 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
 
 
 
-// PANIC HANDLERS
-// our existing panic handler
-#[cfg(not(test))] // new attribute
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
-    loop {}
-}
+// // PANIC HANDLERS
+// // our existing panic handler
+// #[cfg(not(test))] // new attribute
+// #[panic_handler]
+// fn panic(info: &PanicInfo) -> ! {
+//     println!("{}", info);
+//     loop {}
+// }
 
-// our panic handler in test mode
-#[cfg(test)]
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    serial_println!("[failed]\n");
-    serial_println!("Error: {}\n", info);
-    exit_qemu(QemuExitCode::Failed);
-    loop {}
-}
+// // our panic handler in test mode
+// #[cfg(test)]
+// #[panic_handler]
+// fn panic(info: &PanicInfo) -> ! {
+//     serial_println!("[failed]\n");
+//     serial_println!("Error: {}\n", info);
+//     exit_qemu(QemuExitCode::Failed);
+//     loop {}
+// }
 
 
 
-// TESTABLE TRAIT - automate printing messages about error
-pub trait Testable {
-    fn run(&self) -> ();
-}
+// // TESTABLE TRAIT - automate printing messages about error
+// pub trait Testable {
+//     fn run(&self) -> ();
+// }
 
-impl<T> Testable for T
-where
-    T: Fn(),
-{
-    fn run(&self) {
-        serial_print!("{}...\t", core::any::type_name::<T>());
-        self();
-        serial_println!("[ok]");
-    }
-}
+// impl<T> Testable for T
+// where
+//     T: Fn(),
+// {
+//     fn run(&self) {
+//         serial_print!("{}...\t", core::any::type_name::<T>());
+//         self();
+//         serial_println!("[ok]");
+//     }
+// }
 
 
 
