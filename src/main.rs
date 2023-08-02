@@ -27,17 +27,6 @@ mod vga_buffer;
 
 
 
-#[cfg(test)]
-fn test_runner(tests: &[&dyn Fn()]) {
-    println!("Running {} tests", tests.len());
-    for test in tests {
-        test();
-    }
-    /// new
-    exit_qemu(QemuExitCode::Success);
-}
-
-
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
@@ -48,17 +37,6 @@ pub extern "C" fn _start() -> ! {
 
     loop {}
 }
-
-
-
-#[test_case]
-fn trivial_assertion() {
-    print!("trivial assertion... ");
-    assert_eq!(1, 1);
-    println!("[ok]");
-}
-
-
 
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -75,4 +53,21 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
         let mut port = Port::new(0xf4);
         port.write(exit_code as u32);
     }
+}
+
+#[cfg(test)]
+fn test_runner(tests: &[&dyn Fn()]) {
+    serial_println!("Running {} tests", tests.len());
+    for test in tests {
+        test();
+    }
+    /// new
+    exit_qemu(QemuExitCode::Success);
+}
+
+#[test_case]
+fn trivial_assertion() {
+    serial_print!("trivial assertion... ");
+    assert_eq!(1, 1);
+    serial_println!("[ok]");
 }
