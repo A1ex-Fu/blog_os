@@ -1,6 +1,15 @@
 #[allow(dead_code)] //mute warnings about them not being used
 #[derive(Debug, Clone, Copy, PartialEq, Eq)] //enable copy semantics and make is printable and comparable
 #[repr(u8)] //store colors as u8
+
+//write volatilely to make sure the writes are not optimized away
+use volatile::Volatile;
+use core::fmt;
+
+const BUFFER_HEIGHT: usize = 25;
+const BUFFER_WIDTH: usize = 80;
+
+// COLORS
 pub enum Color {
     Black = 0,
     Blue = 1,
@@ -21,10 +30,11 @@ pub enum Color {
 }
 
 
+
+// COLOR CODES
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(transparent)]
 struct ColorCode(u8);
-
 impl ColorCode {
     fn new(foreground: Color, background: Color) -> ColorCode {
         ColorCode((background as u8) << 4 | (foreground as u8))
@@ -32,7 +42,8 @@ impl ColorCode {
 }
 
 
-//represent sceen character and text buffer
+
+// SCREEN CHARACTERS - represent sceen character and text buffer
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(C)]
 struct ScreenChar {
@@ -40,19 +51,16 @@ struct ScreenChar {
     color_code: ColorCode,
 }
 
-const BUFFER_HEIGHT: usize = 25;
-const BUFFER_WIDTH: usize = 80;
 
 
-//writer type
+// WRITER TYPE
 pub struct Writer {
     column_position: usize,
     color_code: ColorCode,
     buffer: &'static mut Buffer,
 }
 
-
-//write a single byte
+// WRITER FUNCTIONS - write bytes, lines, etc.
 impl Writer {
     pub fn write_byte(&mut self, byte: u8) {
         match byte {
@@ -71,10 +79,6 @@ impl Writer {
                     ascii_character: byte,
                     color_code,
                 });
-                // self.buffer.chars[row][col] = ScreenChar {
-                //     ascii_character: byte,
-                //     color_code,
-                // };
                 self.column_position += 1;
             }
         }
@@ -114,18 +118,7 @@ impl Writer {
     }
 }
 
-
-
-//write volatilely to make sure the writes are not optimized away
-use volatile::Volatile;
-
-struct Buffer{
-    chars:[[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_WIDTH],
-}
-
-
-use core::fmt;
-
+// WRITER FORMATTING
 impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
         self.write_string(s);
@@ -134,26 +127,18 @@ impl fmt::Write for Writer {
 }
 
 
-pub fn print_something() {
-    use core::fmt::Write;
-    let mut writer = Writer {
-        column_position: 0,
-        color_code: ColorCode::new(Color::Yellow, Color::Black),
-        buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
-    };
 
-    writer.write_byte(b'H');
-    writer.write_string("ello! ");
-    write!(writer, "The numbers are {} and {}", 42, 1.0/3.0).unwrap();
+// BUFFER - buffer to write screen chars to
+struct Buffer{
+    chars:[[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_WIDTH],
 }
 
 
 
-//lazy def to allow raw pointers
+// LAZY STATIC INIT WRITER - rust doesn't allow raw pointers at compile-time so we use lazy static to init at runtime
 use lazy_static::lazy_static;
 use spin::Mutex;
 lazy_static! {
-
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         column_position: 0,
         color_code: ColorCode::new(Color::Yellow, Color::Black),
@@ -162,6 +147,8 @@ lazy_static! {
 }
 
 
+
+//PRINT
 #[macro_export]
 macro_rules! print {
     ($($arg:tt)*) => ($crate::vga_buffer::_print(format_args!($($arg)*)));
@@ -183,7 +170,6 @@ pub fn _print(args: fmt::Arguments) {
 
 // TESTING
 // UNIT TESTS
-
 #[test_case]
 fn test_println_simple() {
     println!("test_println_simple output");
@@ -205,3 +191,36 @@ fn test_println_output() {
         assert_eq!(char::from(screen_char.ascii_character), c);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// NOTE: i dont think this is ever used; just for initial testing
+// pub fn print_something() {
+//     use core::fmt::Write;
+//     let mut writer = Writer {
+//         column_position: 0,
+//         color_code: ColorCode::new(Color::Yellow, Color::Black),
+//         buffer: unsafe { &mut *(0xb8000 as *mut Buffer) },
+//     };
+
+//     writer.write_byte(b'H');
+//     writer.write_string("ello! ");
+//     write!(writer, "The numbers are {} and {}", 42, 1.0/3.0).unwrap();
+// }
+
