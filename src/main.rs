@@ -1,6 +1,6 @@
 #![no_std] // don't link the Rust standard library
 #![no_main] // disable all Rust-level entry points
-#![feature(custom_test_frameworks)]
+#![feature(custom_test_frameworks)] // make it run test framework
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
@@ -21,13 +21,14 @@ pub extern "C" fn _start() -> ! {
 }
 
 
+
+// AUTOMATIC EXIT
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
 pub enum QemuExitCode {
     Success = 0x10,
     Failed = 0x11,
 }
-
 
 pub fn exit_qemu(exit_code: QemuExitCode) {
     use x86_64::instructions::port::Port;
@@ -39,23 +40,8 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
 }
 
 
-#[cfg(test)]
-fn test_runner(tests: &[&dyn Testable]) {
-    serial_println!("Running {} tests", tests.len());
-    for test in tests {
-        test.run();
-    }
-    /// new
-    exit_qemu(QemuExitCode::Success);
-}
 
-
-#[test_case]
-fn trivial_assertion() {
-    assert_eq!(1, 1);
-}
-
-
+// PANIC HANDLERS
 // our existing panic handler
 #[cfg(not(test))] // new attribute
 #[panic_handler]
@@ -63,7 +49,6 @@ fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
     loop {}
 }
-
 
 // our panic handler in test mode
 #[cfg(test)]
@@ -76,6 +61,8 @@ fn panic(info: &PanicInfo) -> ! {
 }
 
 
+
+// TESTABLE TRAIT - automate printing messages about error
 pub trait Testable {
     fn run(&self) -> ();
 }
@@ -88,5 +75,47 @@ where
         serial_print!("{}...\t", core::any::type_name::<T>());
         self();
         serial_println!("[ok]");
+    }
+}
+
+
+
+// UNIT TESTING
+// TEST RUNNER
+#[cfg(test)]
+fn test_runner(tests: &[&dyn Testable]) {
+    serial_println!("Running {} tests", tests.len());
+    for test in tests {
+        test.run();
+    }
+    /// new
+    exit_qemu(QemuExitCode::Success);
+}
+
+// TEST CASES
+#[test_case]
+fn trivial_assertion() {
+    assert_eq!(1, 1);
+}
+
+#[test_case]
+fn test_println_simple() {
+    println!("test_println_simple output");
+}
+
+#[test_case]
+fn test_println_many() {
+    for _ in 0..200 {
+        println!("test_println_many output");
+    }
+}
+
+#[test_case]
+fn test_println_output() {
+    let s = "Some test string that fits on a single line";
+    println!("{}", s);
+    for (i, c) in s.chars().enumerate() {
+        let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
+        assert_eq!(char::from(screen_char.ascii_character), c);
     }
 }
