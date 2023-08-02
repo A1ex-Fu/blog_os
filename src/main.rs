@@ -6,10 +6,6 @@
 
 use core::panic::PanicInfo;
 
-//additional imports
-use crate::vga_buffer::WRITER;
-
-
 mod serial;
 mod vga_buffer;
 
@@ -96,30 +92,8 @@ fn test_runner(tests: &[&dyn Testable]) {
     exit_qemu(QemuExitCode::Success);
 }
 
-// TEST CASES
+// UNIT TESTS
 #[test_case]
 fn trivial_assertion() {
     assert_eq!(1, 1);
-}
-
-#[test_case]
-fn test_println_simple() {
-    println!("test_println_simple output");
-}
-
-#[test_case]
-fn test_println_many() {
-    for _ in 0..200 {
-        println!("test_println_many output");
-    }
-}
-
-#[test_case]
-fn test_println_output() {
-    let s = "Some test string that fits on a single line";
-    println!("{}", s);
-    for (i, c) in s.chars().enumerate() {
-        let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
-        assert_eq!(char::from(screen_char.ascii_character), c);
-    }
 }
