@@ -31,8 +31,9 @@ fn test_runner(tests: &[&dyn Fn()]) {
     for test in tests {
         test();
     }
+    /// new
+    exit_qemu(QemuExitCode::Success);
 }
-
 
 
 
