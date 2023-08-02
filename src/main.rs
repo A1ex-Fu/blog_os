@@ -7,25 +7,7 @@
 use core::panic::PanicInfo;
 
 mod serial;
-
-// in src/main.rs
-// #[no_mangle]
-// pub extern "C" fn _start() {
-//     println!("Hello World{}", "!");
-//     //panic!("Some panic message");
-//     loop {}
-// }
-
-#[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
-    loop {}
-}
-
-
 mod vga_buffer;
-
-
 
 
 #[no_mangle]
@@ -46,6 +28,7 @@ pub enum QemuExitCode {
     Failed = 0x11,
 }
 
+
 pub fn exit_qemu(exit_code: QemuExitCode) {
     use x86_64::instructions::port::Port;
 
@@ -54,6 +37,7 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
         port.write(exit_code as u32);
     }
 }
+
 
 #[cfg(test)]
 fn test_runner(tests: &[&dyn Fn()]) {
@@ -64,6 +48,7 @@ fn test_runner(tests: &[&dyn Fn()]) {
     /// new
     exit_qemu(QemuExitCode::Success);
 }
+
 
 #[test_case]
 fn trivial_assertion() {
@@ -80,6 +65,7 @@ fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
     loop {}
 }
+
 
 // our panic handler in test mode
 #[cfg(test)]
