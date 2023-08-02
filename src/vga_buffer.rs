@@ -2,9 +2,8 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq)] //enable copy semantics and make is printable and comparable
 #[repr(u8)] //store colors as u8
 
-//write volatilely to make sure the writes are not optimized away
-use volatile::Volatile;
-use core::fmt;
+
+
 
 const BUFFER_HEIGHT: usize = 25;
 const BUFFER_WIDTH: usize = 80;
@@ -119,6 +118,7 @@ impl Writer {
 }
 
 // WRITER FORMATTING
+use core::fmt;
 impl fmt::Write for Writer {
     fn write_str(&mut self, s: &str) -> fmt::Result {
         self.write_string(s);
@@ -129,6 +129,8 @@ impl fmt::Write for Writer {
 
 
 // BUFFER - buffer to write screen chars to
+//write volatilely to make sure the writes are not optimized away
+use volatile::Volatile;
 struct Buffer{
     chars:[[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_WIDTH],
 }
