@@ -23,3 +23,12 @@ fn test_runner(tests: &[&dyn Fn()]) {
 fn panic(info: &PanicInfo) -> ! {
     blog_os::test_panic_handler(info)
 }
+
+
+// TEST CASES
+use blog_os::println;
+
+#[test_case]
+fn test_println() {
+    println!("test_println output");
+}
