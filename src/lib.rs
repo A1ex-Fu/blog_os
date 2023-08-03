@@ -80,3 +80,13 @@ pub fn exit_qemu(exit_code: QemuExitCode) {
 pub fn init() {
     interrupts::init_idt();
 }
+
+// TESTING INTERRUPTS
+/// Entry point for `cargo test`
+#[cfg(test)]
+#[no_mangle]
+pub extern "C" fn _start() -> ! {
+    init();      // new
+    test_main();
+    loop {}
+}
