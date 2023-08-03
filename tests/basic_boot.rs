@@ -5,6 +5,7 @@
 #![test_runner(blog_os::test_runner)]
 
 use core::panic::PanicInfo;
+use blog_os::println;
 
 #[no_mangle] // don't mangle the name of this function
 pub extern "C" fn _start() -> ! {
@@ -13,11 +14,6 @@ pub extern "C" fn _start() -> ! {
     loop {}
 }
 
-fn test_runner(tests: &[&dyn Fn()]) {
-    unimplemented!();
-}
-
-
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     blog_os::test_panic_handler(info)
@@ -25,7 +21,6 @@ fn panic(info: &PanicInfo) -> ! {
 
 
 // TEST CASES
-use blog_os::println;
 
 #[test_case]
 fn test_println() {
