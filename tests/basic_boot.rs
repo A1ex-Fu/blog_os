@@ -6,6 +6,7 @@
 
 use core::panic::PanicInfo;
 use blog_os::println;
+use blog_os::serial_print;
 
 #[no_mangle] // don't mangle the name of this function
 pub extern "C" fn _start() -> ! {
@@ -25,4 +26,11 @@ fn panic(info: &PanicInfo) -> ! {
 #[test_case]
 fn test_println() {
     println!("test_println output");
+}
+
+
+#[test_case]
+fn should_fail() {
+    serial_print!("should_panic::should_fail...\t");
+    assert_eq!(0, 1);
 }
