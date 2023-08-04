@@ -19,6 +19,8 @@ lazy_static! {
     };
 }
 
+
+use x86_64::structures::gdt::{GlobalDescriptorTable, Descriptor};
 use x86_64::structures::gdt::SegmentSelector;
 lazy_static! {
     static ref GDT: (GlobalDescriptorTable, Selectors) = {
