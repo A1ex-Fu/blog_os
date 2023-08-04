@@ -13,10 +13,10 @@ pub extern "C" fn _start() -> ! {
 
     blog_os::init();
 
-    // trigger a page fault
-    unsafe {
-        *(0xdeadbeef as *mut u8) = 42;
-    };
+    // // trigger a page fault
+    // unsafe {
+    //     *(0xdeadbeef as *mut u8) = 42;
+    // };
 
     // as before
     #[cfg(test)]

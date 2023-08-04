@@ -23,10 +23,10 @@ fn panic(info: &PanicInfo) -> ! {
 
 // TEST CASES
 
-// #[test_case]
-// fn test_println() {
-//     println!("test_println output");
-// }
+#[test_case]
+fn test_println() {
+    println!("test_println output");
+}
 
 
 // #[test_case]
