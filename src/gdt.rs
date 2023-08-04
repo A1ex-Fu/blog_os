@@ -4,8 +4,6 @@ use lazy_static::lazy_static;
 
 pub const DOUBLE_FAULT_IST_INDEX: u16 = 0;
 
-use x86_64::structures::gdt::SegmentSelector;
-
 lazy_static! {
     static ref TSS: TaskStateSegment = {
         let mut tss = TaskStateSegment::new();
@@ -21,6 +19,7 @@ lazy_static! {
     };
 }
 
+use x86_64::structures::gdt::SegmentSelector;
 lazy_static! {
     static ref GDT: (GlobalDescriptorTable, Selectors) = {
         let mut gdt = GlobalDescriptorTable::new();
