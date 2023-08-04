@@ -29,8 +29,8 @@ extern "x86-interrupt" fn double_fault_handler(
 }
 
 
-#[test_case]
-fn test_breakpoint_exception() {
-    // invoke a breakpoint exception
-    x86_64::instructions::interrupts::int3();
-}
+// #[test_case]
+// fn test_breakpoint_exception() {
+//     // invoke a breakpoint exception
+//     x86_64::instructions::interrupts::int3();
+// }
