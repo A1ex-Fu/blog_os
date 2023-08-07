@@ -88,15 +88,11 @@ impl InterruptIndex {
 
 
 
+
 extern "x86-interrupt" fn keyboard_interrupt_handler(
     _stack_frame: InterruptStackFrame)
 {
-    use x86_64::instructions::port::Port;
-
-    let mut port = Port::new(0x60);
-    //perform actual read; read scancode
-    let scancode: u8 = unsafe { port.read() };
-    print!("{}", scancode);
+    print!("k");
 
     unsafe {
         PICS.lock()
