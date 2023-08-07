@@ -15,6 +15,7 @@ pub mod gdt;
 pub fn init() {
     gdt::init();
     interrupts::init_idt();
+    unsafe{interrupts::PICS.lock().initialize()};
 }
 
 
