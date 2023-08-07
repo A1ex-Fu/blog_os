@@ -72,6 +72,7 @@ fn test_breakpoint_exception() {
 #[repr(u8)]
 pub enum InterruptIndex {
     Timer = PIC_1_OFFSET,
+    Keyboard, 
 }
 
 impl InterruptIndex {
@@ -85,12 +86,6 @@ impl InterruptIndex {
 }
 
 
-#[derive(Debug, Clone, Copy)]
-#[repr(u8)]
-pub enum InterruptIndex {
-    Timer = PIC_1_OFFSET,
-    Keyboard, // new
-}
 
 
 extern "x86-interrupt" fn keyboard_interrupt_handler(
