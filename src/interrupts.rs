@@ -5,7 +5,7 @@ use crate::println;
 use lazy_static::lazy_static;
 
 use crate::gdt;
-use crate:stack_overflow;
+use crate::stack_overflow;
 
 lazy_static! {
     static ref IDT: InterruptDescriptorTable = {
