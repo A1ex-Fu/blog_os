@@ -24,6 +24,10 @@ pub extern "C" fn _start() -> ! {
     //     *(0xdeadbeef as *mut u8) = 42;
     // };
 
+    //test page fault
+    let ptr = 0xdeadbeaf as *mut u8;
+    unsafe { *ptr = 42; }
+
     // as before
     #[cfg(test)]
     test_main();
