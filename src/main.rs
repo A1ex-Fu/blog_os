@@ -6,6 +6,8 @@
 
 use core::panic::PanicInfo;
 use blog_os::println;
+use bootloader::BootInfo;
+
 use bootloader::{BootInfo, entry_point};
 
 entry_point!(kernel_main);
