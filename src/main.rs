@@ -7,9 +7,6 @@
 use core::panic::PanicInfo;
 use blog_os::println;
 use bootloader::{BootInfo, entry_point};
-
-use x86_64::structures::paging::PageTable;
-
 entry_point!(kernel_main);
 
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
@@ -52,6 +49,7 @@ fn panic(info: &PanicInfo) -> ! {
 
 
 
+use x86_64::structures::paging::PageTable;
 
 if !entry.is_unused() {
     println!("L4 Entry {}: {:?}", i, entry);
