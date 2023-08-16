@@ -1,9 +1,20 @@
 // in src/memory.rs
 
-use x86_64::{
-    structures::paging::PageTable,
-    VirtAddr,
-};
+use x86_64::PhysAddr;
+
+
+/// Translates the given virtual address to the mapped physical address, or
+/// `None` if the address is not mapped.
+///
+/// This function is unsafe because the caller must guarantee that the
+/// complete physical memory is mapped to virtual memory at the passed
+/// `physical_memory_offset`.
+pub unsafe fn translate_addr(addr: VirtAddr, physical_memory_offset: VirtAddr)
+    -> Option<PhysAddr>
+{
+    translate_addr_inner(addr, physical_memory_offset)
+}
+
 
 /// Returns a mutable reference to the active level 4 table.
 ///
