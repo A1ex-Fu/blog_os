@@ -12,7 +12,7 @@ entry_point!(kernel_main);
 
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
     use blog_os::memory::translate_addr;
-    use x86_64::VirtAddr;
+    // use x86_64::VirtAddr;
 
     println!("Hello World{}", "!");
     blog_os::init();
@@ -36,7 +36,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
         println!("{:?} -> {:?}", virt, phys);
     }
 
-    
+
     // as before
     #[cfg(test)]
     test_main();
