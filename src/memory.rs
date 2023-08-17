@@ -1,6 +1,6 @@
 // in src/memory.rs
 
-use x86_64::PhysAddr;
+use x86_64::{PhysAddr, VirtAddr,};
 
 
 /// Translates the given virtual address to the mapped physical address, or
