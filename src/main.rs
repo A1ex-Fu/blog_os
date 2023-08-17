@@ -7,7 +7,10 @@
 use core::panic::PanicInfo;
 use blog_os::println;
 use bootloader::{BootInfo, entry_point};
-use x86_64::structures::paging::PageTable;
+use x86_64::{
+    structures::paging::PageTable,
+    VirtAddr,
+};
 entry_point!(kernel_main);
 
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
