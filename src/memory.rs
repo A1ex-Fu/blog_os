@@ -21,6 +21,11 @@ pub unsafe fn translate_addr(addr: VirtAddr, physical_memory_offset: VirtAddr)
 /// This function is safe to limit the scope of `unsafe` because Rust treats
 /// the whole body of unsafe functions as an unsafe block. This function must
 /// only be reachable through `unsafe fn` from outside of this module.
+/// Private function that is called by `translate_addr`.
+///
+/// This function is safe to limit the scope of `unsafe` because Rust treats
+/// the whole body of unsafe functions as an unsafe block. This function must
+/// only be reachable through `unsafe fn` from outside of this module.
 fn translate_addr_inner(addr: VirtAddr, physical_memory_offset: VirtAddr)
     -> Option<PhysAddr>
 {
@@ -54,7 +59,6 @@ fn translate_addr_inner(addr: VirtAddr, physical_memory_offset: VirtAddr)
     // calculate the physical address by adding the page offset
     Some(frame.start_address() + u64::from(addr.page_offset()))
 }
-
 
 
 /// Returns a mutable reference to the active level 4 table.
