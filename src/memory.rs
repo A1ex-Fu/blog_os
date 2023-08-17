@@ -1,6 +1,9 @@
 // in src/memory.rs
-
-use x86_64::{PhysAddr, VirtAddr,};
+use x86_64::{
+    structures::paging::PageTable,
+    VirtAddr,
+    PhysAddr,
+};
 
 
 /// Translates the given virtual address to the mapped physical address, or
