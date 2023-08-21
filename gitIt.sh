@@ -9,6 +9,7 @@ fi
 COMMIT_MESSAGE="$1"
 
 git add *
+git add *.cargo/config.toml
 git status
 git commit -m "$COMMIT_MESSAGE"
 git push
