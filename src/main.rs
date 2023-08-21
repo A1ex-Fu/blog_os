@@ -10,8 +10,8 @@ use bootloader::{BootInfo, entry_point};
 use x86_64::{
     structures::paging::PageTable,
     VirtAddr,
+    structures::paging::Translate,
 };
-use Translate;
 
 entry_point!(kernel_main);
 
