@@ -13,7 +13,6 @@ use x86_64::{
     structures::paging::Translate,
 };
 extern crate alloc;
-use alloc::boxed::Box;
 
 entry_point!(kernel_main);
 
