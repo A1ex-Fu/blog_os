@@ -4,12 +4,10 @@ use x86_64::{
     VirtAddr,
     PhysAddr,
     structures::paging::OffsetPageTable,
+    structures::paging::{Page, PhysFrame, Mapper, Size4KiB, FrameAllocator},
 };
 
-use x86_64::{
-    PhysAddr,
-    structures::paging::{Page, PhysFrame, Mapper, Size4KiB, FrameAllocator}
-};
+
 
 /// Creates an example mapping for the given page to frame `0xb8000`.
 pub fn create_example_mapping(
