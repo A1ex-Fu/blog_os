@@ -17,6 +17,8 @@ use alloc::boxed::Box;
 
 entry_point!(kernel_main);
 
+use alloc::{boxed::Box, vec, vec::Vec, rc::Rc};
+
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
     use blog_os::allocator; // new import
     use blog_os::memory::{self, BootInfoFrameAllocator};
@@ -52,7 +54,7 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     core::mem::drop(reference_counted);
     println!("reference count is {} now", Rc::strong_count(&cloned_reference));
 
-    
+
     // as before
     #[cfg(test)]
     test_main();
