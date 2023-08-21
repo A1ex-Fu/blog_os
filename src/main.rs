@@ -12,6 +12,8 @@ use x86_64::{
     VirtAddr,
     structures::paging::Translate,
 };
+extern crate alloc;
+use alloc::boxed::Box;
 
 entry_point!(kernel_main);
 
@@ -30,14 +32,8 @@ fn kernel_main(boot_info: &'static BootInfo) -> ! {
     let mut frame_allocator = unsafe {
         BootInfoFrameAllocator::init(&boot_info.memory_map)
     };
-
-    // map an unused page
-    let page = Page::containing_address(VirtAddr::new(0));
-    memory::create_example_mapping(page, &mut mapper, &mut frame_allocator);
-
-    // write the string `New!` to the screen through the new mapping
-    let page_ptr: *mut u64 = page.start_address().as_mut_ptr();
-    unsafe { page_ptr.offset(400).write_volatile(0x_f021_f077_f065_f04e)};
+    
+    let x = Box::new(41);
 
 
     // as before
