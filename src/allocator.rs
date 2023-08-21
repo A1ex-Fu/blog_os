@@ -11,6 +11,8 @@ pub const HEAP_SIZE: usize = 100 * 1024; // 100 KiB
 
 use linked_list_allocator::LockedHeap;
 
+pub mod bump;
+
 #[global_allocator]
 static ALLOCATOR: LockedHeap = LockedHeap::empty();
 
