@@ -18,15 +18,15 @@ pub mod bump;
 
 
 
-unsafe impl GlobalAlloc for Dummy {
-    unsafe fn alloc(&self, _layout: Layout) -> *mut u8 {
-        null_mut()
-    }
+// unsafe impl GlobalAlloc for Dummy {
+//     unsafe fn alloc(&self, _layout: Layout) -> *mut u8 {
+//         null_mut()
+//     }
 
-    unsafe fn dealloc(&self, _ptr: *mut u8, _layout: Layout) {
-        panic!("dealloc should be never called")
-    }
-}
+//     unsafe fn dealloc(&self, _ptr: *mut u8, _layout: Layout) {
+//         panic!("dealloc should be never called")
+//     }
+// }
 
 use x86_64::{
     structures::paging::{
