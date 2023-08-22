@@ -30,12 +30,12 @@ impl BumpAllocator {
 }
 
 
-//implement globalalloc cause all heap allocators have to
-pub unsafe trait GlobalAlloc {
-    unsafe fn alloc(&self, layout: Layout) -> *mut u8;
-    unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout);
+// //implement globalalloc cause all heap allocators have to
+// pub unsafe trait GlobalAlloc {
+//     unsafe fn alloc(&self, layout: Layout) -> *mut u8;
+//     unsafe fn dealloc(&self, ptr: *mut u8, layout: Layout);
 
-}
+// }
 
 /// A wrapper around spin::Mutex to permit trait implementations.
 pub struct Locked<A> {
