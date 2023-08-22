@@ -3,7 +3,6 @@
 extern crate alloc;
 use alloc::alloc::{GlobalAlloc, Layout};
 use core::ptr::null_mut;
-use crate::allocator::bump::Locked;
 
 pub struct Dummy;
 
