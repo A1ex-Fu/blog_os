@@ -37,18 +37,55 @@ pub unsafe trait GlobalAlloc {
 
 }
 
-use alloc::alloc::Layout;
+/// A wrapper around spin::Mutex to permit trait implementations.
+pub struct Locked<A> {
+    inner: spin::Mutex<A>,
+}
 
-unsafe impl GlobalAlloc for spin::Mutex<BumpAllocator> {
+impl<A> Locked<A> {
+    pub const fn new(inner: A) -> Self {
+        Locked {
+            inner: spin::Mutex::new(inner),
+        }
+    }
+
+    pub fn lock(&self) -> spin::MutexGuard<A> {
+        self.inner.lock()
+    }
+}
+
+
+
+
+use super::{align_up, Locked};
+use alloc::alloc::{GlobalAlloc, Layout};
+use core::ptr;
+
+unsafe impl GlobalAlloc for Locked<BumpAllocator> {
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-        // TODO alignment and bounds check
-        let alloc_start = self.next;
-        self.next = alloc_start + layout.size();
-        self.allocations += 1;
-        alloc_start as *mut u8
+        let mut bump = self.lock(); // get a mutable reference
+
+        let alloc_start = align_up(bump.next, layout.align());
+        let alloc_end = match alloc_start.checked_add(layout.size()) {
+            Some(end) => end,
+            None => return ptr::null_mut(),
+        };
+
+        if alloc_end > bump.heap_end {
+            ptr::null_mut() // out of memory
+        } else {
+            bump.next = alloc_end;
+            bump.allocations += 1;
+            alloc_start as *mut u8
+        }
     }
 
     unsafe fn dealloc(&self, _ptr: *mut u8, _layout: Layout) {
-        todo!();
+        let mut bump = self.lock(); // get a mutable reference
+
+        bump.allocations -= 1;
+        if bump.allocations == 0 {
+            bump.next = bump.heap_start;
+        }
     }
 }
