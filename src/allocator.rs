@@ -14,7 +14,7 @@ use linked_list_allocator::LockedHeap;
 pub mod bump;
 
 #[global_allocator]
-static ALLOCATOR: LockedHeap = LockedHeap::empty();
+// static ALLOCATOR: LockedHeap = LockedHeap::empty();
 
 
 
