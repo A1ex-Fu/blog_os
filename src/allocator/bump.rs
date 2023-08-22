@@ -1,4 +1,5 @@
 extern crate alloc;
+use crate::allocator::bump::Locked;
 
 pub struct BumpAllocator {
     heap_start: usize,
