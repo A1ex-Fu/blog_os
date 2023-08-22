@@ -65,6 +65,9 @@ pub fn init_heap(
     Ok(())
 }
 
+/// A wrapper around spin::Mutex to permit trait implementations.
+
+
 
 
 /// Align the given address `addr` upwards to alignment `align`.
