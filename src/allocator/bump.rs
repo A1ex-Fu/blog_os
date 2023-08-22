@@ -38,7 +38,6 @@ pub unsafe trait GlobalAlloc {
 }
 
 
-use alloc::alloc::{GlobalAlloc, Layout};
 
 unsafe impl GlobalAlloc for BumpAllocator {
     unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
