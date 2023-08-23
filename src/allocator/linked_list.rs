@@ -1,3 +1,4 @@
+#![feature(const_mut_refs)]`
 extern crate alloc;
 
 
@@ -43,7 +44,7 @@ struct ListNode {
     next: Option<&'static mut ListNode>,
 }
 
-#![feature(const_mut_refs)]
+
 impl ListNode {
     const fn new(size: usize) -> Self {
         ListNode { size, next: None }
