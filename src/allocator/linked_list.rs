@@ -63,6 +63,8 @@ pub struct LinkedListAllocator {
     head: ListNode,
 }
 
+use super::align_up;
+use core::mem;
 impl LinkedListAllocator {
     /// Creates an empty LinkedListAllocator.
     pub const fn new() -> Self {
