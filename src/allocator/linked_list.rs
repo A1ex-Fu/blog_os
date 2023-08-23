@@ -116,7 +116,27 @@ impl LinkedListAllocator {
         Ok(alloc_start)
     }
 
-        /// Looks for a free region with the given size and alignment and removes
+    
+}
+
+impl LinkedListAllocator {
+    /// Adjust the given layout so that the resulting allocated memory
+    /// region is also capable of storing a `ListNode`.
+    ///
+    /// Returns the adjusted size and alignment as a (size, align) tuple.
+    fn size_align(layout: Layout) -> (usize, usize) {
+        let layout = layout
+            .align_to(mem::align_of::<ListNode>())
+            .expect("adjusting alignment failed")
+            .pad_to_align();
+        let size = layout.size().max(mem::size_of::<ListNode>());
+        (size, layout.align())
+    }
+}
+
+
+impl LinkedListAllocator {
+    /// Looks for a free region with the given size and alignment and removes
     /// it from the list.
     ///
     /// Returns a tuple of the list node and the start address of the allocation.
@@ -142,18 +162,4 @@ impl LinkedListAllocator {
         // no suitable region found
         None
     }
-    /// Adjust the given layout so that the resulting allocated memory
-    /// region is also capable of storing a `ListNode`.
-    ///
-    /// Returns the adjusted size and alignment as a (size, align) tuple.
-    fn size_align(layout: Layout) -> (usize, usize) {
-        let layout = layout
-            .align_to(mem::align_of::<ListNode>())
-            .expect("adjusting alignment failed")
-            .pad_to_align();
-        let size = layout.size().max(mem::size_of::<ListNode>());
-        (size, layout.align())
-    }
 }
-
-
