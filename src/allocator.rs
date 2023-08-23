@@ -1,5 +1,3 @@
-extern crate alloc;
-
 use alloc::alloc::{GlobalAlloc, Layout};
 use core::ptr::null_mut;
 use fixed_size_block::FixedSizeBlockAllocator;
