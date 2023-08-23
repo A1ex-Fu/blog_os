@@ -1,3 +1,4 @@
+extern crate alloc;
 use super::Locked;
 use alloc::alloc::{GlobalAlloc, Layout};
 use core::{
