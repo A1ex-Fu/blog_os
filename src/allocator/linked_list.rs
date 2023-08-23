@@ -83,9 +83,17 @@ impl LinkedListAllocator {
         self.add_free_region(heap_start, heap_size);
     }
 
-    /// Adds the given memory region to the front of the list.
     unsafe fn add_free_region(&mut self, addr: usize, size: usize) {
-        todo!();
+        // ensure that the freed region is capable of holding ListNode
+        assert_eq!(align_up(addr, mem::align_of::<ListNode>()), addr);
+        assert!(size >= mem::size_of::<ListNode>());
+
+        // create a new list node and append it at the start of the list
+        let mut node = ListNode::new(size);
+        node.next = self.head.next.take();
+        let node_ptr = addr as *mut ListNode;
+        node_ptr.write(node);
+        self.head.next = Some(&mut *node_ptr)
     }
 }
 
