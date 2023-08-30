@@ -2,6 +2,7 @@ use core::{future::Future, pin::Pin};
 use alloc::boxed::Box;
 
 pub mod simple_executor;
+pub mod keyboard;
 
 
 pub struct Task {
@@ -17,7 +18,7 @@ impl Task {
             future: Box::pin(future),
         }
     }
-    
+
     fn poll(&mut self, context: &mut Context) -> Poll<()> {
         self.future.as_mut().poll(context)
     }
