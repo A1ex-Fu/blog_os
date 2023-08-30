@@ -20,15 +20,10 @@ impl SimpleExecutor {
 
 use core::task::{Waker, RawWaker};
 
-fn dummy_raw_waker() -> RawWaker {
-    todo!();
-}
 
 fn dummy_waker() -> Waker {
     unsafe { Waker::from_raw(dummy_raw_waker()) }
 }
-
-
 
 
 use core::task::RawWakerVTable;
