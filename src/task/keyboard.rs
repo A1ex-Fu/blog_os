@@ -5,6 +5,9 @@ static SCANCODE_QUEUE: OnceCell<ArrayQueue<u8>> = OnceCell::uninit();
 
 
 use crate::println;
+use futures_util::task::AtomicWaker;
+
+static WAKER: AtomicWaker = AtomicWaker::new();
 
 /// Called by the keyboard interrupt handler
 ///
