@@ -12,7 +12,6 @@ static WAKER: AtomicWaker = AtomicWaker::new();
 use core::{pin::Pin, task::{Poll, Context}};
 use futures_util::stream::Stream;
 
-
 impl Stream for ScancodeStream {
     type Item = u8;
 
@@ -24,7 +23,6 @@ impl Stream for ScancodeStream {
         }
     }
 }
-
 
 
 /// Called by the keyboard interrupt handler
