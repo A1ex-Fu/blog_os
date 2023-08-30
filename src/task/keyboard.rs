@@ -9,6 +9,23 @@ use futures_util::task::AtomicWaker;
 
 static WAKER: AtomicWaker = AtomicWaker::new();
 
+use core::{pin::Pin, task::{Poll, Context}};
+use futures_util::stream::Stream;
+
+impl Stream for ScancodeStream {
+    type Item = u8;
+
+    fn poll_next(self: Pin<&mut Self>, cx: &mut Context) -> Poll<Option<u8>> {
+        let queue = SCANCODE_QUEUE.try_get().expect("not initialized");
+        match queue.pop() {
+            Ok(scancode) => Poll::Ready(Some(scancode)),
+            Err(crossbeam_queue::PopError) => Poll::Pending,
+        }
+    }
+}
+
+
+
 /// Called by the keyboard interrupt handler
 ///
 /// Must not block or allocate.
