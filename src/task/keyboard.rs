@@ -11,7 +11,7 @@ static WAKER: AtomicWaker = AtomicWaker::new();
 
 use core::{pin::Pin, task::{Poll, Context}};
 use futures_util::stream::Stream;
-use futures_util::stream::StreamExt;
+
 
 impl Stream for ScancodeStream {
     type Item = u8;
