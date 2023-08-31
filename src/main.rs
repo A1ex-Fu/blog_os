@@ -18,6 +18,7 @@ entry_point!(kernel_main);
 
 use alloc::{boxed::Box, vec, vec::Vec, rc::Rc};
 use blog_os::task::{Task, simple_executor::SimpleExecutor};
+use blog_os::task::executor::Executor;
 use blog_os::task::keyboard;
 
 fn kernel_main(boot_info: &'static BootInfo) -> ! {
